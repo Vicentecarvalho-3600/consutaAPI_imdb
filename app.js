@@ -24,8 +24,14 @@ botaoBuscar.addEventListener("click", ()=> {
 })
 
 async function core(){
-     const filme = await buscaFilme(nomeBusca.value);
-     defineValores(filme);
+     try {
+          const filme = await buscaFilme(nomeBusca.value);
+          validaDados(filme);
+          defineValores(filme);
+     } catch (erro) {
+          mensagemErro.textContent = erro.message;
+     }
+     
 }
 
 function defineValores(filme){
@@ -48,4 +54,10 @@ function limpaCampos(){
      atores.textContent = "";
      diretor.textContent = "";
      poster.setAttribute("src", imgDefault);
+}
+
+function validaDados(filme){
+     if(filme.Plot === undefined || filme.Year === undefined || filme.Actors === "N/A"){
+          throw new Error("Filme não encontrado");
+     }
 }
